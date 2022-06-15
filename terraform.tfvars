@@ -4,6 +4,6 @@ az_region = "westeurope"
 # Adding TAG's to your Azure resources (Required)
 tags = {
   ProjectName = "azure-lab"
-  Env         = "dev"
+  Env         = "lab"
   Owner       = "jangs"
 }
