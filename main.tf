@@ -12,7 +12,7 @@ provider "azurerm" {
 }
 
 # Create a resource group
-resource "azurerm_resource_group" "azure-lab" {
+resource "azurerm_resource_group" "rg" {
   name     = "azure-lab"
   location = var.az_region
 
