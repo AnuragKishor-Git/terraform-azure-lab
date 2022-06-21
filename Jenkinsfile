@@ -26,7 +26,7 @@ pipeline {
 
     stage('Terraform - init') {
       steps {
-          sh 'terraform init -upgrade'
+          sh 'terraform init -upgrade -input=false'
       }
     }
 
@@ -38,13 +38,13 @@ pipeline {
 
     stage('Terraform - plan') {
       steps {
-          sh 'terraform plan'
+          sh 'terraform plan -out=tfplan -input=false'
       }
     }
 
     stage('Terraform - apply') {
       steps {
-          sh 'terraform apply -auto-approve'
+          sh 'terraform apply -input=false tfplan'
       }
     }
 
