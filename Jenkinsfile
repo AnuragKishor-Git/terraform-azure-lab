@@ -3,6 +3,10 @@ pipeline {
     node "agent-terraform"
   }
 
+  options {
+    ansiColor('xterm')
+  }
+
   environment {
     BRANCH = 'main'
     REPO = 'https://github.com/jansouza/terraform-azure-lab.git'
