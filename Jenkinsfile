@@ -36,6 +36,12 @@ pipeline {
       }
     }
 
+    stage('Terraform - tfsec') {
+      steps {
+          sh 'tfsec .'
+      }
+    }
+
     stage('Terraform - plan') {
       steps {
           sh 'terraform plan -out=tfplan -input=false'
