@@ -58,6 +58,7 @@ resource "azurerm_network_security_group" "myterraformnsg" {
     source_port_range          = "*"
     destination_port_range     = "22"
     source_address_prefix      = "*"
+    #source_address_prefix      = "187.58.9.5"
     destination_address_prefix = "*"
   }
 }
@@ -99,6 +100,7 @@ resource "azurerm_storage_account" "mystorageaccount" {
   resource_group_name      = azurerm_resource_group.rg.name
   account_tier             = "Standard"
   account_replication_type = "LRS"
+  min_tls_version          = "TLS1_2"
 }
 
 # Create (and display) an SSH key
