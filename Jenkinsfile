@@ -60,7 +60,7 @@ pipeline {
 
     stage('Terraform - action') {
       steps {
-          sh 'terraform $action -input=false'
+          sh 'terraform $action -input=false tfplan'
       }
     }
 
