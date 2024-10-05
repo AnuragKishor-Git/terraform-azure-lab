@@ -5,5 +5,5 @@ az_region = "westeurope"
 tags = {
   ProjectName = "azure-lab"
   Env         = "lab"
-  Owner       = "jangs"
+  Owner       = "AK"
 }
