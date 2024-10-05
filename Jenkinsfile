@@ -1,16 +1,8 @@
 pipeline {
-  agent {
-    node "agent-terraform"
-  }
+  agent any 
 
-  options {
-    ansiColor('xterm')
-  }
 
   environment {
-    BRANCH = 'main'
-    REPO = 'https://github.com/jansouza/terraform-azure-lab.git'
-
     ARM_ACCESS_KEY = credentials('ARM_ACCESS_KEY')
     ARM_CLIENT_ID = credentials('ARM_CLIENT_ID')
     ARM_CLIENT_SECRET = credentials('ARM_CLIENT_SECRET')
@@ -18,16 +10,32 @@ pipeline {
     ARM_TENANT_ID = credentials('ARM_TENANT_ID')
   }
 
-  stages {
-
-    stage('Checkout Source') {
-
-      steps {
-        git branch: "$BRANCH",
-            url: "$REPO"
-      }
-    }
-
+   stages {
+        stage('clean workspace'){
+            steps{
+                cleanWs()
+            }
+        }
+        stage('Checkout from Git'){
+            steps{
+                git branch: 'main', url: 'https://github.com/AnuragKishor-Git/terraform-azure-lab.git'
+            }
+        }
+        stage("Sonarqube Analysis "){
+            steps{
+                withSonarQubeEnv('sonar-server') {
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=terra_test \
+                    -Dsonar.projectKey=terra_test '''
+                }
+            }
+        }
+        stage("quality gate"){
+           steps {
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'Sonar-token'
+                }
+            }
+        }
     stage('Terraform - init') {
       steps {
           sh 'terraform init -upgrade -input=false'
@@ -40,21 +48,15 @@ pipeline {
       }
     }
 
-    stage('Terraform - tfsec') {
-      steps {
-          sh 'tfsec .'
-      }
-    }
-
     stage('Terraform - plan') {
       steps {
           sh 'terraform plan -out=tfplan -input=false'
       }
     }
 
-    stage('Terraform - apply') {
+    stage('Terraform - action') {
       steps {
-          sh 'terraform apply -input=false tfplan'
+          sh 'terraform $action -input=false'
       }
     }
 
