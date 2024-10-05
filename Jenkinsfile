@@ -1,6 +1,8 @@
 pipeline {
   agent any 
-
+  tools{
+        jdk 'jdk17'
+  }
 
   environment {
     ARM_ACCESS_KEY = credentials('ARM_ACCESS_KEY')
