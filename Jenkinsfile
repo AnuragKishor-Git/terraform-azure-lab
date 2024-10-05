@@ -8,6 +8,8 @@ pipeline {
     ARM_CLIENT_SECRET = credentials('ARM_CLIENT_SECRET')
     ARM_SUBSCRIPTION_ID = credentials('ARM_SUBSCRIPTION_ID')
     ARM_TENANT_ID = credentials('ARM_TENANT_ID')
+    SCANNER_HOME=tool 'sonar-scanner'
+    BUILD_TAG = "build-${env.BUILD_NUMBER}-${env.BRANCH_NAME}"
   }
 
    stages {
